@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Buscando talentos</title>
+        <link rel="icon" type="image/x-icon" href="templates/assets/favicon.ico" />
+        <link href="static/styleEmpresa.css" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- Responsive navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#!">Bienvenido</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="#!">sobre nosotros</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Page content-->
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-lg-8">
+                    <!-- Post content-->
+                    <article>
+                        <!-- Post header-->
+                        <header class="mb-4">
+                            <!-- Post title-->
+                            <h1 class="fw-bolder mb-1">Buscando talentos</h1>
+                            <!-- Post meta content-->
+                            <div class="text-muted fst-italic mb-2" id="date"></div>
+                            <!-- Post categories-->
+                            <a class="badge bg-secondary text-decoration-none link-light" href="https://www.linkedin.com/feed/" target="_blank">Linkedln</a>
+                        </header>
+                        <!-- Preview image figure-->
+                        <!-- Post content-->
+                    
+                    </article>
+                    <!-- Comments section-->
+                    <section class="mb-5">
+                        <div class="card bg-light">
+                            <!--Tabla de muestra-->
+
+
+                            <div id="tabla-container" class="table-container" style="display:none;">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Link</th>
+                                            <th>Educación</th>
+                                            <th>Experiencia</th>
+                                            <th>Habilidades</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Aquí Flask genera dinámicamente las filas -->
+                                        {% for fila in datos %}
+                                            <tr>
+                                                <td>{{ fila.nombre }}</td>
+                                                <td><a href="https://{{ fila.link }}" target="_blank">{{ fila.link }}</a></td> <!-- Columna con enlaces -->
+                                                <td>{{ fila.educacion }}</td>
+                                                <td>{{ fila.experiencia }}</td>
+                                                <td>{{ fila.habilidades }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                        </div>
+                    </section>
+                </div>
+                <!-- Side widgets-->
+                <div class="col-lg-4" style="margin-top: 8%;">
+                    <!-- Search widget-->
+                    <div class="card mb-4">
+                        <div class="card-header">Experiencia</div>
+                        <div class="card-body">
+                            <div class="input-group">
+                                <input id = "texto1" class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Categories widget-->
+                    <div class="card mb-4">
+                        <div class="card-header">Habilidades</div>
+                        <div class="card-body">
+                            <div class="input-group">
+                                <input id = "texto2" class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Side widget-->
+                    <div class="card mb-4">
+                        <div class="card-header">Educación</div>
+                        <div class="card-body">
+                            <div class="input-group">
+                                <input id = "texto3" class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="generarTabla()" class="btn btn-primary" id="button-search" type="button" style="width: 100px; margin-left: 40%; margin-block-end: 5%;">Buscar</button>
+                </div>
+                <form action="{{ url_for('log') }}" method="get">
+                    <button onclick="log()" class="btn btn-primary" id="button-search" type="submit" style="width: 100px; margin-left: 40%; margin-block-end: 5%;">Volver</button>
+                </form>
+            </div>
+        </div>
+        <!-- Footer-->
+        <footer class="py-5 bg-dark" style="margin-top: 10%;">
+            <div class="container"><p class="m-0 text-center text-white">ARROZ</p></div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        
+    </body>
+    <script>
+        function generarTabla() {
+            // Obtener los textos de los inputs utilizando sus ids
+            var texto1 = document.getElementById('texto1').value;
+            var texto2 = document.getElementById('texto2').value;
+            var texto3 = document.getElementById('texto3').value;
+    
+            // Verificar que todos los inputs tengan valores
+            if (texto1 && texto2 && texto3) {
+                // Enviar los datos a Flask usando Fetch API
+                fetch('/generar_tabla', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `texto1=${texto1}&texto2=${texto2}&texto3=${texto3}`
+                })
+                .then(response => response.json())  // Convertir la respuesta a JSON
+                .then(datos => {
+                    // Llenar la tabla con los datos obtenidos
+                    var tablaBody = document.querySelector('#tabla-container table tbody');
+                    tablaBody.innerHTML = '';  // Limpiar la tabla antes de agregar nuevos datos
+    
+                    datos.forEach(fila => {
+                        var tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${fila.nombre}</td>
+                            <td><a href="https://${fila.link}" target="_blank">link</a></td>
+                            <td>${fila.educacion}</td>
+                            <td>${fila.experiencia}</td>
+                            <td>${fila.habilidades}</td>
+                        `;
+                        tablaBody.appendChild(tr);
+                    });
+    
+                    // Mostrar la tabla si no está visible
+                    document.getElementById('tabla-container').style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            } else {
+                alert("Por favor, completa todos los campos para mayor precisión");
+            }
+        }
+    </script>
+</html>

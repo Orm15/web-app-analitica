@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+        font-size: 5em;
+        margin: 0.5em 0;
+        text-align: center;
+        }
+
+        .lab {
+            font-weight: bold;
+            color: blue;
+        }
+
+        .oris {
+            font-weight: bold;
+            color: white; /* Color de relleno de la letra */
+            -webkit-text-stroke: 2px blue; /* Borde azul */
+        }
+        p {
+            font-size: 2.8em;
+            color:blue;
+            text-align: center;
+            margin: 0.5em 0 1.5em 0;
+        }
+
+        .question {
+            font-size: 2em;
+            margin-bottom: 1em;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1em;
+        }
+
+        button {
+            padding: 0.7em 1.5em;
+            font-size: 1.5em;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            background-color: #007BFF;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>
+        <span class="lab">LAB</span>
+        <span class="oris">ORIS</span>
+    </h1>
+    <p><strong>Trabajos ideales para trabajadores ideales</strong> </p>
+    <div class="question"><strong>¿Qué estás buscando?</strong></div>
+    <div class="buttons">
+        <form action="{{ url_for('index2') }}" method="get">
+            <button type="submit">Trabajo</button>
+        </form>
+        <form action="{{ url_for('index1') }}" method="get">
+            <button type="submit">Trabajadores</button>
+        </form>
+    </div>
+</body>
+</html>
